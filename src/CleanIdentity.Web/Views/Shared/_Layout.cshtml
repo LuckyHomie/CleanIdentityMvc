@@ -1,0 +1,41 @@
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CleanIdentityMvc</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+<header class="topbar">
+    <a asp-controller="Home" asp-action="Index" class="brand">CleanIdentityMvc</a>
+    <nav>
+        <a asp-controller="Home" asp-action="Index">Start</a>
+        <a href="/swagger">Swagger</a>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Account" asp-action="Activity">Moje czynności</a>
+            <a asp-controller="Account" asp-action="ChangePassword">Zmień hasło</a>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="inline-form">
+                <button type="submit">Wyloguj</button>
+            </form>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login">Logowanie</a>
+            <a asp-controller="Account" asp-action="Register">Rejestracja</a>
+        }
+    </nav>
+</header>
+<main class="container">
+    @if (TempData["StatusMessage"] is not null)
+    {
+        <div class="alert">@TempData["StatusMessage"]</div>
+    }
+    @RenderBody()
+</main>
+<footer class="footer">ASP.NET Core MVC + Identity + EF Core + SQL Server</footer>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,30 @@
+@model ActivityPageViewModel
+@{
+    ViewData["Title"] = "Moje czynności";
+}
+<h1>Moje czynności</h1>
+<form asp-action="ToggleActivityTable" method="post" class="toolbar">
+    <input type="hidden" name="show" value="@(!Model.ShowAfterLogin).ToString().ToLowerInvariant()" />
+    <button type="submit">@(Model.ShowAfterLogin ? "Nie pokazuj po logowaniu" : "Pokazuj po logowaniu")</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Data UTC</th>
+            <th>Akcja</th>
+            <th>Szczegóły</th>
+            <th>IP</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Activities)
+    {
+        <tr>
+            <td>@item.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            <td>@item.Action</td>
+            <td>@item.Details</td>
+            <td>@item.IpAddress</td>
+        </tr>
+    }
+    </tbody>
+</table>

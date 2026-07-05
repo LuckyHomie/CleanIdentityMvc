@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/CleanIdentity.Core/CleanIdentity.Core.csproj" />
+  <Project Path="src/CleanIdentity.Infrastructure/CleanIdentity.Infrastructure.csproj" />
+  <Project Path="src/CleanIdentity.UseCases/CleanIdentity.UseCases.csproj" />
+  <Project Path="src/CleanIdentity.Web/CleanIdentity.Web.csproj" />
+</Solution>

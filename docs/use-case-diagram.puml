@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+actor "Gość" as Guest
+actor "Zalogowany użytkownik" as User
+actor "Administrator" as Admin
+
+rectangle "System CleanIdentityMvc" {
+  usecase "Rejestracja konta" as UC_Register
+  usecase "Logowanie" as UC_Login
+  usecase "Wylogowanie" as UC_Logout
+  usecase "Przypomnienie hasła
+przez e-mail" as UC_Forgot
+  usecase "Reset hasła" as UC_Reset
+  usecase "Zmiana hasła" as UC_Change
+  usecase "Przegląd własnych
+czynności" as UC_Activity
+  usecase "Włączenie/wyłączenie
+tabeli czynności" as UC_Toggle
+  usecase "Blokada konta po
+nieudanych próbach" as UC_Lockout
+  usecase "Sprawdzenie historii haseł" as UC_History
+  usecase "Opcjonalna kontrola IP" as UC_IP
+  usecase "Przegląd dokumentacji API
+Swagger" as UC_Swagger
+}
+
+Guest --> UC_Register
+Guest --> UC_Login
+Guest --> UC_Forgot
+Guest --> UC_Reset
+Guest --> UC_Swagger
+User --> UC_Logout
+User --> UC_Change
+User --> UC_Activity
+User --> UC_Toggle
+Admin --> UC_IP
+UC_Login ..> UC_Lockout : <<include>>
+UC_Reset ..> UC_History : <<include>>
+UC_Change ..> UC_History : <<include>>
+UC_Login ..> UC_IP : <<include>>
+@enduml

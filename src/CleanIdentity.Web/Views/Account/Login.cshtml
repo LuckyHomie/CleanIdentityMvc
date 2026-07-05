@@ -1,0 +1,23 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Logowanie";
+}
+<h1>Logowanie</h1>
+<form asp-action="Login" method="post" class="form-card">
+    <input asp-for="ReturnUrl" type="hidden" />
+    <div asp-validation-summary="ModelOnly" class="validation"></div>
+
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email" class="validation"></span>
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password" class="validation"></span>
+
+    <label class="checkbox"><input asp-for="RememberMe" /> @Html.DisplayNameFor(m => m.RememberMe)</label>
+
+    <button type="submit">Zaloguj</button>
+    <p><a asp-action="ForgotPassword">Nie pamiętasz hasła?</a></p>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

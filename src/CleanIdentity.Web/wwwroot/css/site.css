@@ -1,0 +1,19 @@
+:root { color-scheme: light; font-family: system-ui, Segoe UI, sans-serif; }
+body { margin: 0; background: #f6f7f9; color: #1f2937; }
+a { color: #075985; text-decoration: none; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 2rem; background: white; border-bottom: 1px solid #e5e7eb; }
+.brand { font-weight: 700; color: #111827; }
+nav { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.container { max-width: 980px; margin: 2rem auto; padding: 0 1rem; }
+.footer { text-align: center; padding: 2rem; color: #6b7280; }
+.form-card { display: grid; gap: .6rem; max-width: 460px; background: white; border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 12px; }
+input { padding: .65rem; border: 1px solid #cbd5e1; border-radius: 8px; }
+button { padding: .65rem 1rem; border: 0; border-radius: 8px; background: #0f766e; color: white; cursor: pointer; }
+.inline-form { display: inline; }
+.inline-form button { background: #334155; }
+.validation { color: #b91c1c; }
+.alert { padding: .75rem 1rem; border-radius: 8px; background: #ecfeff; border: 1px solid #67e8f9; margin-bottom: 1rem; }
+table { border-collapse: collapse; width: 100%; background: white; border: 1px solid #e5e7eb; }
+th, td { padding: .7rem; border-bottom: 1px solid #e5e7eb; text-align: left; vertical-align: top; }
+.toolbar { margin-bottom: 1rem; }
+.checkbox { display: flex; gap: .5rem; align-items: center; }
