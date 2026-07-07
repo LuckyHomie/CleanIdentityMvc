@@ -86,10 +86,6 @@ erDiagram
 | `LoginAuditLogs` | Rejestr prób logowania oraz czasu wylogowania. |
 | `AllowedIpAddresses` | Opcjonalna lista adresów IP dopuszczonych do systemu. |
 
-## Jak narysować ER w SSMS
+## Diagram przy użyciu Ridera
 
-1. Uruchom migrację EF Core i utwórz bazę danych.
-2. W SSMS otwórz bazę `CleanIdentityMvcDb`.
-3. Rozwiń `Database Diagrams` i utwórz nowy diagram.
-4. Dodaj tabele `AspNetUsers`, `AspNetRoles`, `AspNetUserRoles`, `UserActivities`, `PasswordHistories`, `LoginAuditLogs`, `AllowedIpAddresses`.
-5. Ustaw relacje logiczne `UserId -> AspNetUsers.Id`. Jeśli chcesz mieć fizyczne FK, dodaj je migracją w `OnModelCreating`.
+<img width="2032" height="3416" alt="image" src="https://github.com/user-attachments/assets/8c0248dc-6afa-4cf2-8876-49f10c10dc3d" />
