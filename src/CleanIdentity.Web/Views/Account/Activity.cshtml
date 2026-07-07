@@ -1,30 +1,58 @@
 @model ActivityPageViewModel
+
 @{
     ViewData["Title"] = "Moje czynności";
+    var newShowValue = !Model.ShowAfterLogin;
 }
+
 <h1>Moje czynności</h1>
+
+@if (TempData["StatusMessage"] is not null)
+{
+    <div class="alert alert-info">
+        @TempData["StatusMessage"]
+    </div>
+}
+
 <form asp-action="ToggleActivityTable" method="post" class="toolbar">
-    <input type="hidden" name="show" value="@(!Model.ShowAfterLogin).ToString().ToLowerInvariant()" />
-    <button type="submit">@(Model.ShowAfterLogin ? "Nie pokazuj po logowaniu" : "Pokazuj po logowaniu")</button>
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" name="show" value="@newShowValue.ToString().ToLowerInvariant()" />
+
+    <button type="submit" class="btn btn-primary">
+        @(Model.ShowAfterLogin ? "Nie pokazuj po logowaniu" : "Pokazuj po logowaniu")
+    </button>
 </form>
-<table>
-    <thead>
+
+<hr />
+
+@if (!Model.Activities.Any())
+{
+    <p>Brak zarejestrowanych czynności.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
         <tr>
-            <th>Data UTC</th>
+            <th>Data</th>
             <th>Akcja</th>
             <th>Szczegóły</th>
-            <th>IP</th>
+            <th>Adres IP</th>
+            <th>Przeglądarka</th>
         </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model.Activities)
-    {
-        <tr>
-            <td>@item.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
-            <td>@item.Action</td>
-            <td>@item.Details</td>
-            <td>@item.IpAddress</td>
-        </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach (var activity in Model.Activities)
+        {
+            <tr>
+                <td>@activity.CreatedAt.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@activity.Action</td>
+                <td>@activity.Details</td>
+                <td>@activity.IpAddress</td>
+                <td>@activity.UserAgent</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

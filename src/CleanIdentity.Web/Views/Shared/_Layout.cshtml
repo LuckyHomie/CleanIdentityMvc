@@ -11,6 +11,12 @@
 <header class="topbar">
     <a asp-controller="Home" asp-action="Index" class="brand">CleanIdentityMvc</a>
     <nav>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="nav-link text-dark" asp-controller="Admin" asp-action="Index">
+                Panel administratora
+            </a>
+        }
         <a asp-controller="Home" asp-action="Index">Start</a>
         <a href="/swagger">Swagger</a>
         @if (User.Identity?.IsAuthenticated == true)
@@ -35,7 +41,6 @@
     }
     @RenderBody()
 </main>
-<footer class="footer">ASP.NET Core MVC + Identity + EF Core + SQL Server</footer>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

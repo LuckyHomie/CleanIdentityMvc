@@ -55,6 +55,8 @@ public sealed class IdentityAccountService : IAccountService
         {
             return AuthOperationResult.Failure(string.Join(" ", result.Errors.Select(x => x.Description)));
         }
+        
+        await _userManager.AddToRoleAsync(user, "User");
 
         await _passwordHistory.RememberCurrentPasswordAsync(user.Id, cancellationToken);
         await _activityLogger.LogAsync(user.Id, "REGISTER", "Użytkownik zarejestrował konto.", command.IpAddress, command.UserAgent, cancellationToken);

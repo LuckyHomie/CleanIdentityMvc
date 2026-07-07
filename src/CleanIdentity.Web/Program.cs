@@ -1,5 +1,8 @@
 using CleanIdentity.Infrastructure;
+using CleanIdentity.Infrastructure.Data;
+using CleanIdentity.Infrastructure.Identity;
 using CleanIdentity.Infrastructure.Middleware;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,15 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOpenApi("v1");
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await DatabaseSeeder.SeedAsync(dbContext, userManager, roleManager, builder.Configuration);
+}
 
 if (!app.Environment.IsDevelopment())
 {

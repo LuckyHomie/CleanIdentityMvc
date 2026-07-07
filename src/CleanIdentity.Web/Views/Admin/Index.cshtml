@@ -1,0 +1,164 @@
+@model CleanIdentity.Web.Models.Admin.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Panel administratora";
+}
+
+<h1>Panel administratora</h1>
+
+@if (TempData["StatusMessage"] is not null)
+{
+    <div class="alert alert-info">
+        @TempData["StatusMessage"]
+    </div>
+}
+
+<h2>Użytkownicy</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Imię i nazwisko</th>
+            <th>Role</th>
+            <th>Błędne logowania</th>
+            <th>Blokada</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.FullName</td>
+            <td>@string.Join(", ", user.Roles)</td>
+            <td>@user.AccessFailedCount</td>
+            <td>
+                @if (user.IsLockedOut)
+                {
+                    <span>Zablokowany do @user.LockoutEnd?.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                }
+                else
+                {
+                    <span>Aktywny</span>
+                }
+            </td>
+            <td>
+                <form asp-action="LockUser" method="post" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-warning btn-sm">Zablokuj</button>
+                </form>
+
+                <form asp-action="UnlockUser" method="post" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-success btn-sm">Odblokuj</button>
+                </form>
+
+                @if (!user.Roles.Contains("Admin"))
+                {
+                    <form asp-action="AddAdminRole" method="post" style="display:inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit" class="btn btn-primary btn-sm">Daj Admin</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="RemoveAdminRole" method="post" style="display:inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Usuń Admin</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<hr />
+
+<h2>Dozwolone adresy IP</h2>
+
+<form asp-action="AddAllowedIp" method="post" class="mb-3">
+    @Html.AntiForgeryToken()
+
+    <div>
+        <label>Adres IP</label>
+        <input type="text" name="value" placeholder="np. 127.0.0.1" />
+    </div>
+
+    <div>
+        <label>Opis</label>
+        <input type="text" name="description" placeholder="np. komputer administratora" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj IP</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Adres IP</th>
+            <th>Opis</th>
+            <th>Aktywny</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var ip in Model.AllowedIpAddresses)
+    {
+        <tr>
+            <td>@ip.Value</td>
+            <td>@ip.Description</td>
+            <td>@(ip.Enabled ? "Tak" : "Nie")</td>
+            <td>
+                <form asp-action="ToggleAllowedIp" method="post" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@ip.Id" />
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                        @(ip.Enabled ? "Wyłącz" : "Włącz")
+                    </button>
+                </form>
+
+                <form asp-action="DeleteAllowedIp" method="post" style="display:inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@ip.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<hr />
+
+<h2>Ostatnie czynności użytkowników</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Użytkownik</th>
+            <th>Akcja</th>
+            <th>Szczegóły</th>
+            <th>IP</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var activity in Model.RecentActivities)
+    {
+        <tr>
+            <td>@activity.CreatedAt.LocalDateTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            <td>@activity.Email</td>
+            <td>@activity.Action</td>
+            <td>@activity.Details</td>
+            <td>@activity.IpAddress</td>
+        </tr>
+    }
+    </tbody>
+</table>
